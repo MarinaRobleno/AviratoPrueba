@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export function UsersList({data, setData}) {
-    const [searchId, setSearchId] = useState("")
+export function UsersList({data, setData, searchId}) {
 
-const handleSearchId = (e) =>{
-    e.preventDefault();
-    setSearchId(e.target.value)
-}
+
   useEffect(() => {
     axios
       .get("https://jsonplaceholder.typicode.com/users")
@@ -20,7 +16,6 @@ const handleSearchId = (e) =>{
   });
   return (
     <div>
-        <input placeholder="Enter id" onChange={handleSearchId}></input>
       <ul>
         {data
         .filter((singleData) => {
