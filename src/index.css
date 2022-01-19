@@ -22,6 +22,25 @@ header {
   padding: 0 20px
 }
 
+.content{
+  padding: 30px;
+}
+
+.user-list-content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+table{
+  width: 50%;
+  text-align: left;
+}
+
+th, td{
+  padding: 10px;
+}
+
 .search-input{
   width: 300px;
   height: 30px;
@@ -33,7 +52,7 @@ header {
   outline: none;
 }
 
-.add-users-button{
+.navigation-button{
   width: 120px;
   height: 50px;
   font-size: 16px;
@@ -45,7 +64,7 @@ header {
   color: #83B0EB;
   font-weight: 700;
 }
-.add-users-button:hover{
+.navigation-button:hover{
   background-color: #A4C7F5;
   color: white;
   border: 3px solid white;
