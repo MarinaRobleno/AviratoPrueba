@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 export function UsersList({ users, setUsers, searchId }) {
   const [editingUser, setEditingUser] = useState(null);
-  const [addedData, setAddedData] = useState({});
 
   useEffect(() => {
     fetchData();
@@ -56,12 +55,19 @@ export function UsersList({ users, setUsers, searchId }) {
       });
   };
 
-  const handleDeleteUser = (singleData) => {
-    axios
-      .delete(`https://jsonplaceholder.typicode.com/users/${singleData.id}`)
-      .then((res) => {
-        setUsers(res.data);
-      });
+  const handleDeleteUser = async (id) => {
+    await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+      method: 'DELETE'
+    })
+    .then((res) => {
+      if(res.status !== 200){
+        return
+      }else{
+        setUsers(users.filter((user)=> {
+          return user.id !== id;
+        }))
+      }
+    })
   };
 
   const handleEditUser = (e) => {
@@ -70,7 +76,7 @@ export function UsersList({ users, setUsers, searchId }) {
   };
   return (
     <div className="user-list-content">
-      <form onSubmit={handleSubmitData} id="new-user-form">
+      <form onSubmit={handleSubmitData} id="new-user-form">Add a New User
         <input placeholder="Name" name="name" />
         <input placeholder="username" name="username" />
         <input placeholder="email" name="email" />
@@ -110,7 +116,7 @@ export function UsersList({ users, setUsers, searchId }) {
               <td>
                 <AiFillDelete
                   style={{ cursor: "pointer" }}
-                  onClick={() => handleDeleteUser(singleData)}
+                  onClick={() => handleDeleteUser(singleData.id)}
                 />
               </td>
             </tr>
