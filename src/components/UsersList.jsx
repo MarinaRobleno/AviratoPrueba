@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import { EditForm } from "./EditForm";
 
 export function UsersList({ users, setUsers, searchId }) {
@@ -135,29 +133,29 @@ export function UsersList({ users, setUsers, searchId }) {
           <th>Delete</th>
         </tr>
         {users
-          .filter((singleData) => {
+          .filter((user) => {
             if (searchId == "") {
-              return singleData;
-            } else if (singleData.id == searchId) {
-              return singleData;
+              return user;
+            } else if (user.id == searchId) {
+              return user;
             }
           })
-          .map((singleData) => (
-            <tr key={singleData.id}>
-              <td>{singleData.id}</td>
-              <td>{singleData.name}</td>
-              <td>{singleData.username}</td>
-              <td>{singleData.email}</td>
+          .map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.name}</td>
+              <td>{user.username}</td>
+              <td>{user.email}</td>
               <td>
                 <AiFillEdit
                   style={{ cursor: "pointer" }}
-                  onClick={() => handleEditUser(singleData)}
+                  onClick={() => handleEditUser(user)}
                 />
               </td>
               <td>
                 <AiFillDelete
                   style={{ cursor: "pointer" }}
-                  onClick={() => handleDeleteUser(singleData.id)}
+                  onClick={() => handleDeleteUser(user.id)}
                 />
               </td>
             </tr>
