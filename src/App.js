@@ -2,7 +2,6 @@ import { UsersList } from "./components/UsersList";
 import { useState } from "react";
 import { NavBar } from "./components/NavBar";
 import { Route, Routes } from "react-router-dom";
-import { AddUser } from "./components/AddUser";
 
 function App() {
   const [users, setUsers] = useState([]);

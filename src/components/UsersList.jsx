@@ -66,7 +66,7 @@ export function UsersList({ users, setUsers, searchId }) {
   };
 
   const editUser = async (id, name, username, email) => {
-    console.log(id, name, username, email)
+    console.log(id, name, username, email);
     await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
       method: "PUT",
       headers: {
@@ -78,20 +78,25 @@ export function UsersList({ users, setUsers, searchId }) {
         email: email,
       }),
     })
-    .then((res) => {
-      if (res.status != 200) {
-        return;
-      } else {
-        return res.json();
-      }
-    })
-    .then((data) => {
-      setUsers(users.map((user) => user.id === id ? {...user, name: name, username: username, email: email} : user))
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-    
+      .then((res) => {
+        if (res.status != 200) {
+          return;
+        } else {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        setUsers(
+          users.map((user) =>
+            user.id === id
+              ? { ...user, name: name, username: username, email: email }
+              : user
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleSubmitData = (e) => {
     e.preventDefault();
@@ -105,15 +110,21 @@ export function UsersList({ users, setUsers, searchId }) {
   };
   return (
     <div className="user-list-content">
-      <form onSubmit={handleSubmitData} id="new-user-form">
+      <div className="add-container">
         <div className="editing-title">Add a New User</div>
-        <input placeholder="Name" name="name" />
-        <input placeholder="username" name="username" />
-        <input placeholder="email" name="email" />
-        <button type="submit" onSubmit={handleSubmitData}>
-          Add
-        </button>
-      </form>
+        <form onSubmit={handleSubmitData} className="editing-form" id="new-user-form">
+          <input className="styled-input" placeholder="Name" name="name" />
+          <input
+            className="styled-input"
+            placeholder="username"
+            name="username"
+          />
+          <input className="styled-input" placeholder="email" name="email" />
+          <button className="styled-button" type="submit" onSubmit={handleSubmitData}>
+            Add
+          </button>
+        </form>
+      </div>
       <table>
         <tr>
           <th>ID</th>

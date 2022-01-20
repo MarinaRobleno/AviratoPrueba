@@ -1,3 +1,8 @@
+html, *{
+  box-sizing: border-box;
+  margin: 0;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -53,9 +58,9 @@ th, td{
   outline: none;
 }
 
-.navigation-button{
-  width: 120px;
-  height: 50px;
+.styled-button{
+  min-width: 50px;
+  height: 30px;
   font-size: 16px;
   background-color: white;
   border: 3px solid #A4C7F5;
@@ -65,7 +70,7 @@ th, td{
   color: #83B0EB;
   font-weight: 700;
 }
-.navigation-button:hover{
+.styled-button:hover{
   background-color: #A4C7F5;
   color: white;
   border: 3px solid white;
@@ -73,22 +78,74 @@ th, td{
 
 .editing-container{
   position: absolute;
-  padding: 40px;
+  top: 200px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  padding: 10px;
   z-index: 50;
-  width: 660px;
-  height: 100px;
+  width: 680px;
+  height: 170px;
   background-color: #83B0EB;
   border: 3px solid white;
   box-shadow: 0px 16px 30px #00000014;
   left: 50%;
-  margin-left: -350px;
+  margin-left: -340px;
+}
+
+.editing-header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .editing-title{
   font-size: 20px;
   font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.close-icon{
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.add-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.styled-input{
+  border: none;
+  width: 180px;
+  height: 30px;
+  padding: 5px;
+}
+
+.styled-input:focus{
+  outline: none;
+}
+
+.editing-form{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#edit-button{
+  width: 80px;
+}
+
+#new-user-form{
+  height: 40px;
+  width: 700px;
+  padding: 10px;
+  background-color: #83B0EB;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

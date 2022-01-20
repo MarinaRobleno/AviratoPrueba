@@ -13,10 +13,6 @@ export function NavBar({ setSearchId }) {
         placeholder="Enter id"
         onChange={handleSearchId}
       ></input>
-      <div>
-        {/*<Link to='./new-user'><button className="navigation-button">Add Users</button></Link>
-        <Link to='/'><button className="navigation-button">All Users</button></Link>*/}
-      </div>
     </header>
   );
 }
