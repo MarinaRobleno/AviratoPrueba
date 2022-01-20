@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import { AddUser } from "./components/AddUser";
 
 function App() {
-  const [data, setData] = useState([]);
+  const [users, setUsers] = useState([]);
   const [searchId, setSearchId] = useState("");
   const [submitData, setSubmitData] = useState({});
   return (
@@ -17,16 +17,12 @@ function App() {
             path="/"
             element={
               <UsersList
-                data={data}
-                setData={setData}
+                users={users}
+                setUsers={setUsers}
                 searchId={searchId}
                 submitData={submitData}
               />
             }
-          />
-          <Route
-            path="/new-user"
-            element={<AddUser setSubmitData={setSubmitData} data={data} />}
           />
         </Routes>
       </div>

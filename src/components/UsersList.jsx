@@ -1,50 +1,83 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { AiFillEdit, AiFillDelete } from 'react-icons/ai';
+import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
-export function UsersList({ data, setData, searchId, submitData }) {
-  const [editingUser, setEditingUser] = useState({});
+export function UsersList({ users, setUsers, searchId }) {
+  const [editingUser, setEditingUser] = useState(null);
+  const [addedData, setAddedData] = useState({});
 
   useEffect(() => {
-    axios
-      .get("https://jsonplaceholder.typicode.com/users")
-      .then((res) => {
-        setData(res.data);
+    fetchData();
+  }, []);
+
+  const handleSubmitData = (e) => {
+    e.preventDefault();
+    addData(e.target.name.value, e.target.username.value, e.target.email.value);
+    const form = document.getElementById("new-user-form");
+    form.reset();
+  };
+
+  const fetchData = async () => {
+    await fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => {
+        setUsers(data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [data]);
+  };
 
-  useEffect(() => {
-    if (submitData) {
-      axios
-        .post("https://jsonplaceholder.typicode.com/users", {
-          submitData,
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [submitData]);
-
-  const handleDeleteUser = (e) => {
-    axios
-      .delete("https://jsonplaceholder.typicode.com/users", {
-        data: {id: e}
+  const addData = async (name, username, email) => {
+    await fetch("https://jsonplaceholder.typicode.com/users", {
+      method: "POST",
+      body: JSON.stringify({
+        name: name,
+        username: username,
+        email: email,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((res) => {
+        if (res.status != 201) {
+          return;
+        } else {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        setUsers((users) => [...users, data]);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-  }
+  };
+
+  const handleDeleteUser = (singleData) => {
+    axios
+      .delete(`https://jsonplaceholder.typicode.com/users/${singleData.id}`)
+      .then((res) => {
+        setUsers(res.data);
+      });
+  };
 
   const handleEditUser = (e) => {
     e.preventDefault();
-    setEditingUser(e)
-  }
+    setEditingUser(e);
+  };
   return (
     <div className="user-list-content">
+      <form onSubmit={handleSubmitData} id="new-user-form">
+        <input placeholder="Name" name="name" />
+        <input placeholder="username" name="username" />
+        <input placeholder="email" name="email" />
+        <button type="submit" onSubmit={handleSubmitData}>
+          Submit
+        </button>
+      </form>
       <table>
         <tr>
           <th>ID</th>
@@ -54,7 +87,7 @@ export function UsersList({ data, setData, searchId, submitData }) {
           <th>Edit</th>
           <th>Delete</th>
         </tr>
-        {data
+        {users
           .filter((singleData) => {
             if (searchId == "") {
               return singleData;
@@ -68,8 +101,18 @@ export function UsersList({ data, setData, searchId, submitData }) {
               <td>{singleData.name}</td>
               <td>{singleData.username}</td>
               <td>{singleData.email}</td>
-              <td><AiFillEdit style={{cursor: 'pointer'}} onClick={() => handleEditUser(singleData)}/></td>
-              <td><AiFillDelete style={{cursor: 'pointer'}} onClick={() => handleDeleteUser(singleData)}/></td>
+              <td>
+                <AiFillEdit
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleEditUser(singleData)}
+                />
+              </td>
+              <td>
+                <AiFillDelete
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleDeleteUser(singleData)}
+                />
+              </td>
             </tr>
           ))}
       </table>
