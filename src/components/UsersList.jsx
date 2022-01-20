@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { EditForm } from "./EditForm";
 
 export function UsersList({ users, setUsers, searchId }) {
   const [editingUser, setEditingUser] = useState(null);
@@ -9,13 +10,6 @@ export function UsersList({ users, setUsers, searchId }) {
   useEffect(() => {
     fetchData();
   }, []);
-
-  const handleSubmitData = (e) => {
-    e.preventDefault();
-    addData(e.target.name.value, e.target.username.value, e.target.email.value);
-    const form = document.getElementById("new-user-form");
-    form.reset();
-  };
 
   const fetchData = async () => {
     await fetch("https://jsonplaceholder.typicode.com/users")
@@ -57,31 +51,67 @@ export function UsersList({ users, setUsers, searchId }) {
 
   const handleDeleteUser = async (id) => {
     await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
-      method: 'DELETE'
+      method: "DELETE",
+    }).then((res) => {
+      if (res.status !== 200) {
+        return;
+      } else {
+        setUsers(
+          users.filter((user) => {
+            return user.id !== id;
+          })
+        );
+      }
+    });
+  };
+
+  const editUser = async (id, name, username, email) => {
+    console.log(id, name, username, email)
+    await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify({
+        name: name,
+        username: username,
+        email: email,
+      }),
     })
     .then((res) => {
-      if(res.status !== 200){
-        return
-      }else{
-        setUsers(users.filter((user)=> {
-          return user.id !== id;
-        }))
+      if (res.status != 200) {
+        return;
+      } else {
+        return res.json();
       }
     })
+    .then((data) => {
+      setUsers(users.map((user) => user.id === id ? {...user, name: name, username: username, email: email} : user))
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    
+  };
+  const handleSubmitData = (e) => {
+    e.preventDefault();
+    addData(e.target.name.value, e.target.username.value, e.target.email.value);
+    const form = document.getElementById("new-user-form");
+    form.reset();
   };
 
   const handleEditUser = (e) => {
-    e.preventDefault();
-    setEditingUser(e);
+    setEditingUser(e.id);
   };
   return (
     <div className="user-list-content">
-      <form onSubmit={handleSubmitData} id="new-user-form">Add a New User
+      <form onSubmit={handleSubmitData} id="new-user-form">
+        <div className="editing-title">Add a New User</div>
         <input placeholder="Name" name="name" />
         <input placeholder="username" name="username" />
         <input placeholder="email" name="email" />
         <button type="submit" onSubmit={handleSubmitData}>
-          Submit
+          Add
         </button>
       </form>
       <table>
@@ -122,6 +152,13 @@ export function UsersList({ users, setUsers, searchId }) {
             </tr>
           ))}
       </table>
+      {editingUser ? (
+        <EditForm
+          editingUser={editingUser}
+          setEditingUser={setEditingUser}
+          editUser={editUser}
+        />
+      ) : null}
     </div>
   );
 }

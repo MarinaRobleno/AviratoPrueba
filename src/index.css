@@ -70,3 +70,25 @@ th, td{
   color: white;
   border: 3px solid white;
 }
+
+.editing-container{
+  position: absolute;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  z-index: 50;
+  width: 660px;
+  height: 100px;
+  background-color: #83B0EB;
+  border: 3px solid white;
+  box-shadow: 0px 16px 30px #00000014;
+  left: 50%;
+  margin-left: -350px;
+}
+
+.editing-title{
+  font-size: 20px;
+  font-weight: 700;
+}
