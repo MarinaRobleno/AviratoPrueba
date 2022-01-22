@@ -85,13 +85,13 @@ th, td{
   justify-content: flex-start;
   padding: 10px;
   z-index: 50;
-  width: 680px;
+  width: 920px;
   height: 170px;
   background-color: #83B0EB;
   border: 3px solid white;
   box-shadow: 0px 16px 30px #00000014;
   left: 50%;
-  margin-left: -340px;
+  margin-left: -460px;
 }
 
 .editing-header{
@@ -142,7 +142,6 @@ th, td{
 
 #new-user-form{
   height: 40px;
-  width: 700px;
   padding: 10px;
   background-color: #83B0EB;
   display: flex;

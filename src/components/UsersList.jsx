@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { EditForm } from "./EditForm";
+import { API_KEY } from "../apikey";
 
 export function UsersList({ users, setUsers, searchId }) {
   const [editingUser, setEditingUser] = useState(null);
@@ -10,7 +11,10 @@ export function UsersList({ users, setUsers, searchId }) {
   }, []);
 
   const fetchData = async () => {
-    await fetch("https://examen.avirato.com/client/get")
+    await fetch("https://examen.avirato.com/client/get", {
+      method: "GET",
+      headers: {"Authorization" : API_KEY}
+    })
       .then((res) => res.json())
       .then((data) => {
         setUsers(data);
@@ -31,6 +35,7 @@ export function UsersList({ users, setUsers, searchId }) {
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
+        "Authorization" : API_KEY
       },
     })
       .then((res) => {
@@ -51,6 +56,9 @@ export function UsersList({ users, setUsers, searchId }) {
   const handleDeleteUser = async (id) => {
     await fetch(`https://examen.avirato.com/client/delete/${id}`, {
       method: "DELETE",
+      headers: {
+        "Authorization" : API_KEY
+      }
     }).then((res) => {
       if (res.status !== 200) {
         return;
@@ -65,11 +73,11 @@ export function UsersList({ users, setUsers, searchId }) {
   };
 
   const editUser = async (id, nombre, telefono, correo, fechaNacimiento) => {
-    console.log(id, nombre, telefono, correo, fechaNacimiento);
-    await fetch(`https://examen.avirato.com/client/put/${id}`, {
+    await fetch(`https://examen.avirato.com/client/put`, {
       method: "PUT",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
+        "Authorization" : API_KEY
       },
       body: JSON.stringify({
         nombre: nombre,
@@ -113,14 +121,14 @@ export function UsersList({ users, setUsers, searchId }) {
       <div className="add-container">
         <div className="editing-title">Add a New User</div>
         <form onSubmit={handleSubmitData} className="editing-form" id="new-user-form">
-          <input className="styled-input" placeholder="Nombre" nombre="nombre" />
+          <input className="styled-input" placeholder="Nombre" name="nombre" />
           <input
             className="styled-input"
             placeholder="Telefono"
-            nombre="telefono"
+            name="telefono"
           />
-          <input className="styled-input" placeholder="Correo" nombre="correo" />
-          <input className="styled-input" placeholder="Fecha de Nacimiento" nombre="fechaNacimiento" />
+          <input className="styled-input" placeholder="Correo" name="correo" />
+          <input className="styled-input" placeholder="Fecha de Nacimiento" name="fechaNacimiento" />
           <button className="styled-button" type="submit" onSubmit={handleSubmitData}>
             Add
           </button>
