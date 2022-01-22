@@ -10,7 +10,7 @@ export function UsersList({ users, setUsers, searchId }) {
   }, []);
 
   const fetchData = async () => {
-    await fetch("https://jsonplaceholder.typicode.com/users")
+    await fetch("https://examen.avirato.com/client/get")
       .then((res) => res.json())
       .then((data) => {
         setUsers(data);
@@ -20,13 +20,14 @@ export function UsersList({ users, setUsers, searchId }) {
       });
   };
 
-  const addData = async (name, username, email) => {
-    await fetch("https://jsonplaceholder.typicode.com/users", {
+  const addData = async (nombre, telefono, correo, fechaNacimiento) => {
+    await fetch("https://examen.avirato.com/client/post", {
       method: "POST",
       body: JSON.stringify({
-        name: name,
-        username: username,
-        email: email,
+        nombre: nombre,
+        telefono: telefono,
+        correo: correo,
+        fechaNacimiento: fechaNacimiento
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -48,7 +49,7 @@ export function UsersList({ users, setUsers, searchId }) {
   };
 
   const handleDeleteUser = async (id) => {
-    await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+    await fetch(`https://examen.avirato.com/client/delete/${id}`, {
       method: "DELETE",
     }).then((res) => {
       if (res.status !== 200) {
@@ -63,17 +64,18 @@ export function UsersList({ users, setUsers, searchId }) {
     });
   };
 
-  const editUser = async (id, name, username, email) => {
-    console.log(id, name, username, email);
-    await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
+  const editUser = async (id, nombre, telefono, correo, fechaNacimiento) => {
+    console.log(id, nombre, telefono, correo, fechaNacimiento);
+    await fetch(`https://examen.avirato.com/client/put/${id}`, {
       method: "PUT",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
       body: JSON.stringify({
-        name: name,
-        username: username,
-        email: email,
+        nombre: nombre,
+        telefono: telefono,
+        correo: correo,
+        fechaNacimiento: fechaNacimiento
       }),
     })
       .then((res) => {
@@ -87,7 +89,7 @@ export function UsersList({ users, setUsers, searchId }) {
         setUsers(
           users.map((user) =>
             user.id === id
-              ? { ...user, name: name, username: username, email: email }
+              ? { ...user, nombre: nombre, telefono: telefono, correo: correo, fechaNacimiento: fechaNacimiento }
               : user
           )
         );
@@ -98,7 +100,7 @@ export function UsersList({ users, setUsers, searchId }) {
   };
   const handleSubmitData = (e) => {
     e.preventDefault();
-    addData(e.target.name.value, e.target.username.value, e.target.email.value);
+    addData(e.target.nombre.value, e.target.telefono.value, e.target.correo.value, e.target.fechaNacimiento.value);
     const form = document.getElementById("new-user-form");
     form.reset();
   };
@@ -111,13 +113,14 @@ export function UsersList({ users, setUsers, searchId }) {
       <div className="add-container">
         <div className="editing-title">Add a New User</div>
         <form onSubmit={handleSubmitData} className="editing-form" id="new-user-form">
-          <input className="styled-input" placeholder="Name" name="name" />
+          <input className="styled-input" placeholder="Nombre" nombre="nombre" />
           <input
             className="styled-input"
-            placeholder="username"
-            name="username"
+            placeholder="Telefono"
+            nombre="telefono"
           />
-          <input className="styled-input" placeholder="email" name="email" />
+          <input className="styled-input" placeholder="Correo" nombre="correo" />
+          <input className="styled-input" placeholder="Fecha de Nacimiento" nombre="fechaNacimiento" />
           <button className="styled-button" type="submit" onSubmit={handleSubmitData}>
             Add
           </button>
@@ -127,7 +130,8 @@ export function UsersList({ users, setUsers, searchId }) {
         <tr>
           <th>ID</th>
           <th>Name</th>
-          <th>Username</th>
+          <th>Phone</th>
+          <th>Birthday</th>
           <th>Mail</th>
           <th>Edit</th>
           <th>Delete</th>
@@ -143,9 +147,10 @@ export function UsersList({ users, setUsers, searchId }) {
           .map((user) => (
             <tr key={user.id}>
               <td>{user.id}</td>
-              <td>{user.name}</td>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
+              <td>{user.nombre}</td>
+              <td>{user.telefono}</td>
+              <td>{user.fechaNacimiento}</td>
+              <td>{user.correo}</td>
               <td>
                 <AiFillEdit
                   style={{ cursor: "pointer" }}

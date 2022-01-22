@@ -6,9 +6,10 @@ export function EditForm({ editingUser, setEditingUser, editUser }) {
     e.preventDefault();
     editUser(
       editingUser,
-      e.target.name.value,
-      e.target.username.value,
-      e.target.email.value
+      e.target.nombre.value,
+      e.target.telefono.value,
+      e.target.correo.value,
+      e.target.fechaNacimiento.value
     );
     setEditingUser(null);
   };
@@ -24,13 +25,14 @@ export function EditForm({ editingUser, setEditingUser, editUser }) {
         <AiFillCloseCircle className="close-icon" onClick={handleClose}/>
       </div>
       <form className="editing-form" onSubmit={handleSubmitEdition}>
-        <input className="styled-input" placeholder="Name" name="name" />
+        <input className="styled-input" placeholder="Nombre" name="nombre" />
         <input
           className="styled-input"
-          placeholder="username"
-          name="username"
+          placeholder="Teléfono"
+          name="telefono"
         />
-        <input className="styled-input" placeholder="email" name="email" />
+        <input className="styled-input" placeholder="Correo" name="correo" />
+        <input className="styled-input" placeholder="Fecha de Nacimiento" name="fechaNacimiento" />
         <button
           className="styled-button"
           id="edit-button"
